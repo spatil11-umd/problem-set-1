@@ -6,23 +6,26 @@ import pandas as pd
 import etl
 import preprocessing
 import logistic_regression
-import decision_tree
+from decision_tree import run_decision_tree
 import calibration_plot
+#pip install matplotlib (run it)
+#pip install seaborn
 
-
-# Call functions / instanciate objects from the .py files
 def main():
+    # PART 1: Run ETL
+    etl.run_etl()
+   
+    # PART 2: Pre-processing and get the arrests dataframe
+    df_arrests = preprocessing.preprocess()
 
-    # PART 1: Instanciate etl, saving the two datasets in `./data/`
+    # PART 3: Logistic Regression training and prediction
+    df_arrests_train, df_arrests_test = logistic_regression.run_logistic_regression(df_arrests)
 
-    # PART 2: Call functions/instanciate objects from preprocessing
-
-    # PART 3: Call functions/instanciate objects from logistic_regression
-
-    # PART 4: Call functions/instanciate objects from decision_tree
-
-    # PART 5: Call functions/instanciate objects from calibration_plot
-
+    # PART 4: Decision Tree training and prediction
+    df_arrests_train, df_arrests_test = run_decision_tree(df_arrests_train, df_arrests_test)
+    
+    # PART 5: Calibration and metrics using test data
+    calibration_plot.run_calibration_and_metrics(df_arrests_test)
 
 if __name__ == "__main__":
     main()
